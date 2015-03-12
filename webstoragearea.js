@@ -41,7 +41,7 @@ var localStorageExtension = {};
         return function () {
             var value = window.localStorage.getItem(key);
             var array = $.parseJSON('[' + value + ']');
-            if (array.length != 1) {
+            if (array.length != 1 || array[0] === null) {
                 return false;
             }
 
