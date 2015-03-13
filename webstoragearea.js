@@ -6,6 +6,16 @@ var localStorageExtension = {};
     // store the input , textarea , select in the area
     localStorageExtension.StorageArea = function (area) {
         return function () {
+            // Don't store the URL within Filter
+            var filter = localStorageExtension.Filter;
+            if (filter.length > 0) {
+                for (var i = 0; i < filter.length; i++) {
+                    if (window.location.href.indexOf(filter[i]) > -1) {
+                        return true;
+                    }
+                }
+            }
+
             var scope = $(area);
             var jsonArray = [];
             for (var i = 0; i < searchItems.length; i++) {
@@ -39,9 +49,20 @@ var localStorageExtension = {};
     // get storage
     localStorageExtension.GetStorage = function (key) {
         return function () {
+
+            // Don't Get storage from the URL within Filter
+            var filter = localStorageExtension.Filter;
+            if (filter.length > 0) {
+                for (var i = 0; i < filter.length; i++) {
+                    if (window.location.href.indexOf(filter[i]) > -1) {
+                        return true;
+                    }
+                }
+            }
+
             var value = window.localStorage.getItem(key);
             var array = $.parseJSON('[' + value + ']');
-            if (array.length != 1 || array[0] === null) {
+            if (array[0] === null) {
                 return false;
             }
 
@@ -65,6 +86,7 @@ var localStorageExtension = {};
         return djb2Code(window.location.href);
     }
 
+    localStorageExtension.Filter = [];
     //is a given value empty? Objects, arrays, strings
     empty = function (value) {
         if (object(value)) {
