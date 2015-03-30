@@ -46,6 +46,38 @@ var localStorageExtension = {};
         };
     };
 
+    // store the input , textarea , select in the area
+    localStorageExtension.CleanArea = function (area) {
+        return function () {
+            var scope = $(area);
+            for (var i = 0; i < searchItems.length; i++) {
+                var getItem = scope.find(searchItems[i]);
+                for (var j = 0; j < getItem.length; j++) {
+                    var tmpId = getItem[j].id;
+
+                    if (empty(tmpId)) {
+                        continue;
+                    }
+
+                    var tmpV = getItem[j];
+                    if (searchItems[i] == "input:checkbox") {
+                        getItem[j].checked = false;
+                        continue;
+                    }
+
+                    if (searchItems[i] == "select") {
+                        $(tmpV).prop('selectedIndex', 0);
+                        //$(tmpV).find('option:first-child').attr("selected", "selected");
+                        continue;
+                    }
+
+                    $(tmpV).val('')
+                }
+            }
+            return true;
+        };
+    };
+
     // get storage
     localStorageExtension.GetStorage = function (key) {
         return function () {
@@ -80,7 +112,12 @@ var localStorageExtension = {};
             return true;
         }
     };
-
+    // Delete key
+    localStorageExtension.DelStorage = function (key) {
+        return function () {
+            window.localStorage.removeItem(key);
+        };
+    };
     // key of the storage 
     localStorageExtension.GetRoot = function () {
         return djb2Code(window.location.href);
