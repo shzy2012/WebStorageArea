@@ -12,6 +12,13 @@
             $("#ctl00_ContentPlaceHolder1_shortcutButtons_ImgBtnSearch").click(function () {
                 localStorageExtension.StorageArea("#searchTable").call();  // store the url
             })
+            
+             // Clean the inputs of search and clean the local cache data
+            $("input[id=toolBtnClear]").click(function () {
+                localStorageExtension.DelStorage(key).call();
+                localStorageExtension.CleanArea(".cleanSeach").call();
+            });
+    
         })
     </script>
    
