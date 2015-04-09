@@ -7,18 +7,24 @@
   ```javascript
       <script type="text/javascript">
       $(function () {
-            localStorageExtension.Filter = ["joey","defalut"]; // Add filter
+      
             localStorageExtension.GetStorage(localStorageExtension.GetRoot()).call(); // get storeage for the url
+            
             $("#BtnSearch").click(function () {
                 localStorageExtension.StorageArea("#searchTable").call();  // store the url
             })
             
              // Clean the inputs of search and clean the local cache data
             $("input[id=toolBtnClear]").click(function () {
-                localStorageExtension.DelStorage(key).call();
+                // localStorageExtension.DelStorage(key).call();
                 localStorageExtension.CleanArea(".cleanSeach").call();
             });
     
         })
     </script>
    
+<h2>if doesn't want to cache , do like this: add 'no_webcache' to div </h2>
+  ```html
+   <div id="searchTable" no_webcache>
+      ...
+   </div>
