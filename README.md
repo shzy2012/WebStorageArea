@@ -9,7 +9,7 @@
       $(function () {
             localStorageExtension.Filter = ["joey","defalut"]; // Add filter
             localStorageExtension.GetStorage(localStorageExtension.GetRoot()).call(); // get storeage for the url
-            $("#ctl00_ContentPlaceHolder1_shortcutButtons_ImgBtnSearch").click(function () {
+            $("#BtnSearch").click(function () {
                 localStorageExtension.StorageArea("#searchTable").call();  // store the url
             })
             
