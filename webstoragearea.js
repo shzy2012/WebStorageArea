@@ -6,17 +6,13 @@ var localStorageExtension = {};
     // store the input , textarea , select in the area
     localStorageExtension.StorageArea = function (area) {
         return function () {
-            // Don't store the URL within Filter
-            var filter = localStorageExtension.Filter;
-            if (filter.length > 0) {
-                for (var i = 0; i < filter.length; i++) {
-                    if (window.location.href.indexOf(filter[i]) > -1) {
-                        return true;
-                    }
-                }
-            }
 
             var scope = $(area);
+            // Don't store the perperty of no_webcache
+            if (scope.attr('no_webcache') != undefined) {
+                return true;
+            }
+
             var jsonArray = [];
             for (var i = 0; i < searchItems.length; i++) {
                 var getItem = scope.find(searchItems[i]);
@@ -46,7 +42,7 @@ var localStorageExtension = {};
         };
     };
 
-    // store the input , textarea , select in the area
+    // clean the input , textarea , select in the area
     localStorageExtension.CleanArea = function (area) {
         return function () {
             var scope = $(area);
@@ -67,7 +63,6 @@ var localStorageExtension = {};
 
                     if (searchItems[i] == "select") {
                         $(tmpV).prop('selectedIndex', 0);
-                        //$(tmpV).find('option:first-child').attr("selected", "selected");
                         continue;
                     }
 
@@ -81,17 +76,6 @@ var localStorageExtension = {};
     // get storage
     localStorageExtension.GetStorage = function (key) {
         return function () {
-
-            // Don't Get storage from the URL within Filter
-            var filter = localStorageExtension.Filter;
-            if (filter.length > 0) {
-                for (var i = 0; i < filter.length; i++) {
-                    if (window.location.href.indexOf(filter[i]) > -1) {
-                        return true;
-                    }
-                }
-            }
-
             var value = window.localStorage.getItem(key);
             var array = $.parseJSON('[' + value + ']');
             if (array[0] === null) {
@@ -112,18 +96,19 @@ var localStorageExtension = {};
             return true;
         }
     };
+
     // Delete key
     localStorageExtension.DelStorage = function (key) {
         return function () {
             window.localStorage.removeItem(key);
         };
     };
+
     // key of the storage 
     localStorageExtension.GetRoot = function () {
         return djb2Code(window.location.href);
     }
 
-    localStorageExtension.Filter = [];
     //is a given value empty? Objects, arrays, strings
     empty = function (value) {
         if (object(value)) {
